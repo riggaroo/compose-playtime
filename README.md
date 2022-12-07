@@ -2,6 +2,11 @@
 
 This project contains a set of experiments of things made with Jetpack Compose. 
 
+![](art/perlin_noise_jelly_fish.mp4)
+![](art/hello_gradient_path.mp4)
+![](art/bouncy_loader.mp4)
+![](art/bouncy_rope.gif)
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.

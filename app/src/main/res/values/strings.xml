@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Compose Playtime</string>
+    <string name="horiz_pager_title_basics">Horizontal Pager Basics</string>
+    <string name="horiz_pager_title_different_paddings">Horizontal Pager: different paddings</string>
+    <string name="horiz_pager_title_looping">Horizontal Pager: Looping</string>
+    <string name="horiz_pager_title_looping_tabs">Horizontal Pager: Looping Tabs</string>
+    <string name="horiz_pager_title_scroll_content">Horizontal Pager: Scroll Content</string>
+    <string name="horiz_pager_title_tabs">Horizontal Pager: Tabs</string>
+    <string name="horiz_pager_with_transition_title">Horizontal Pager with Transition</string>
+    <string name="horiz_pager_with_indicator_title">Horizontal Pager with Indicator</string>
+    <string name="pagers_title_nested">Nested Pagers</string>
+    <string name="vertical_pager_title_basics">Vertical Pager Basics</string>
+    <string name="vertical_pager_with_indicator_title">Vertical pager with indicator</string>
 </resources>

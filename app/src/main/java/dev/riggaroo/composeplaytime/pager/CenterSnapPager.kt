@@ -82,7 +82,7 @@ fun CenterSnapPager() {
             val coroutineScope = rememberCoroutineScope()
             CircleFilterItem(filter = listPageItem[page],
                 pagerState = pagerState,
-                isSelected = pagerState.currentPage == page,
+                page = page,
                 onPageSelected = { filter ->
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(page)
@@ -98,7 +98,7 @@ fun CenterSnapPager() {
 @Composable
 fun CircleFilterItem(filter: Filter,
                      pagerState: PagerState,
-                     isSelected: Boolean,
+                     page: Int,
                      onPageSelected: (Filter) -> Unit) {
     Column(modifier = Modifier.clickable {
         onPageSelected(filter)
@@ -106,7 +106,8 @@ fun CircleFilterItem(filter: Filter,
         // Calculate the absolute offset for the current page from the
         // scroll position. We use the absolute value which allows us to mirror
         // any effects for both directions
-        val pageOffset = pagerState.currentPageOffsetFraction.absoluteValue
+        val pageOffset = ((pagerState.currentPage - page) + pagerState
+            .currentPageOffsetFraction).absoluteValue
 
 
         // We animate the scaleX + scaleY, between 85% and 100%
@@ -128,7 +129,7 @@ fun CircleFilterItem(filter: Filter,
     }
     ) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            if (isSelected){
+            if (pagerState.currentPage == page){
                 Box(modifier = Modifier.size(70.dp)
                     .clip(CircleShape)
                     .background(Color.White))

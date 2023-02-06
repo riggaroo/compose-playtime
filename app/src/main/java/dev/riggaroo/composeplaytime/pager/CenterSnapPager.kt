@@ -62,7 +62,9 @@ import kotlin.math.absoluteValue
 fun CenterSnapPager() {
     val pagerState = rememberPagerState()
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray))
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray))
         val pageSize = 70.dp
         HorizontalPager(
             state = pagerState,
@@ -72,7 +74,10 @@ fun CenterSnapPager() {
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 10.dp),
-            contentPadding = PaddingValues(start = (maxWidth - pageSize)/2, end = (maxWidth - pageSize)/2),
+            contentPadding = PaddingValues(
+                start = (maxWidth - pageSize) / 2,
+                end = (maxWidth - pageSize) / 2
+            ),
             flingBehavior = PagerDefaults.flingBehavior(
                 state = pagerState,
                 pagerSnapDistance = PagerSnapDistance.atMost(30),
@@ -96,45 +101,53 @@ fun CenterSnapPager() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CircleFilterItem(filter: Filter,
-                     pagerState: PagerState,
-                     page: Int,
-                     onPageSelected: (Filter) -> Unit) {
-    Column(modifier = Modifier.clickable {
-        onPageSelected(filter)
-    }.graphicsLayer {
-        // Calculate the absolute offset for the current page from the
-        // scroll position. We use the absolute value which allows us to mirror
-        // any effects for both directions
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction).absoluteValue
-
-
-        // We animate the scaleX + scaleY, between 85% and 100%
-        lerp(
-            start = 0.85f,
-            stop = 1f,
-            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-        ).also { scale ->
-            scaleX = scale
-            scaleY = scale
+fun CircleFilterItem(
+    filter: Filter,
+    pagerState: PagerState,
+    page: Int,
+    onPageSelected: (Filter) -> Unit,
+) {
+    Column(modifier = Modifier
+        .clickable {
+            onPageSelected(filter)
         }
+        .graphicsLayer {
+            // Calculate the absolute offset for the current page from the
+            // scroll position. We use the absolute value which allows us to mirror
+            // any effects for both directions
+            val pageOffset = ((pagerState.currentPage - page) + pagerState
+                .currentPageOffsetFraction).absoluteValue
 
-        // We animate the alpha, between 50% and 100%
-        alpha = lerp(
-            start = 0.25f,
-            stop = 1f,
-            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-        )
-    }
+
+            // We animate the scaleX + scaleY, between 85% and 100%
+            lerp(
+                start = 0.85f,
+                stop = 1f,
+                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+            ).also { scale ->
+                scaleX = scale
+                scaleY = scale
+            }
+
+            // We animate the alpha, between 50% and 100%
+            alpha = lerp(
+                start = 0.25f,
+                stop = 1f,
+                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+            )
+        }
     ) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            if (pagerState.currentPage == page){
-                Box(modifier = Modifier.size(70.dp)
-                    .clip(CircleShape)
-                    .background(Color.White))
+            if (pagerState.currentPage == page) {
+                Box(
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                )
             }
-            Image(painter = painterResource(id = filter.imagePreview),
+            Image(
+                painter = painterResource(id = filter.imagePreview),
                 contentDescription = filter.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -143,15 +156,18 @@ fun CircleFilterItem(filter: Filter,
                     .clip(CircleShape)
             )
         }
-        Text(filter.name,
+        Text(
+            filter.name,
             maxLines = 1,
             textAlign = TextAlign.Center,
             color = Color.White,
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
-val listPageItem = listOf(Filter("Black & White", R.drawable.dog),
+val listPageItem = listOf(
+    Filter("Black & White", R.drawable.dog),
     Filter("Cinematic", R.drawable.dog),
     Filter("Juno", R.drawable.sunset),
     Filter("Dazzle", R.drawable.dog),
@@ -167,5 +183,5 @@ val listPageItem = listOf(Filter("Black & White", R.drawable.dog),
 
 data class Filter(
     val name: String,
-    @DrawableRes val imagePreview: Int
+    @DrawableRes val imagePreview: Int,
 )

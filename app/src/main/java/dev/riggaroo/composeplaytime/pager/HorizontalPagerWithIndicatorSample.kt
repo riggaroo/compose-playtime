@@ -33,9 +33,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import dev.riggaroo.composeplaytime.R
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalPagerApi::class
+)
 @Composable
 fun HorizontalPagerWithIndicatorSample() {
     Scaffold(
@@ -51,10 +55,10 @@ fun HorizontalPagerWithIndicatorSample() {
                 .fillMaxSize()
                 .padding(padding)) {
             val pagerState = rememberPagerState()
-
+            val pageCount = 10
             // Display 10 items
             HorizontalPager(
-                pageCount = 10,
+                pageCount = pageCount,
                 state = pagerState,
                 // Add 32.dp horizontal padding to 'center' the pages
                 contentPadding = PaddingValues(horizontal = 32.dp),
@@ -70,12 +74,13 @@ fun HorizontalPagerWithIndicatorSample() {
                 )
             }
 
-           /* TODO HorizontalPagerIndicator(
+            HorizontalPagerIndicator(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
-            )*/
+                pageCount = pageCount
+            )
 
             ActionsRow(
                 pagerState = pagerState,

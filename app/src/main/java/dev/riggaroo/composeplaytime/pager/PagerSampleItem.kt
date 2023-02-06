@@ -19,6 +19,7 @@ package dev.riggaroo.composeplaytime.pager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -41,7 +42,7 @@ internal fun PagerSampleItem(
     page: Int,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier) {
+    Box(modifier.fillMaxSize()) {
         // Our page content, displaying a random image
         Image(
             painter = rememberImagePainter(

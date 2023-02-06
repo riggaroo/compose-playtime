@@ -30,7 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -83,11 +82,11 @@ fun HorizontalPagerLoopingTabsSample() {
             ScrollableTabRow(
                 // Our selected tab is our current page
                 selectedTabIndex = currentIndex,
-                indicator = { tabPositions ->
+                /*indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
                         Modifier.pagerTabIndicatorOffset(pagerState, tabPositions, ::pageMapper)
                     )
-                }
+                }*/
             ) {
                 // Add tabs for all of our pages
                 pages.forEachIndexed { index, title ->

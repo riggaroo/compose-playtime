@@ -33,9 +33,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.VerticalPagerIndicator
 import dev.riggaroo.composeplaytime.R
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalPagerApi::class
+)
 @Composable
 fun VerticalPagerWithIndicatorSample() {
     Scaffold(
@@ -48,6 +52,7 @@ fun VerticalPagerWithIndicatorSample() {
     ) { padding ->
         Column(Modifier.fillMaxSize()) {
             val pagerState = rememberPagerState()
+            val pageCount = 10
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -57,7 +62,7 @@ fun VerticalPagerWithIndicatorSample() {
             ) {
                 // Display 10 items
                 VerticalPager(
-                    pageCount = 10,
+                    pageCount = pageCount,
                     state = pagerState,
                     // Add 32.dp vertical padding to 'center' the pages
                     contentPadding = PaddingValues(vertical = 32.dp),
@@ -71,10 +76,11 @@ fun VerticalPagerWithIndicatorSample() {
                     )
                 }
 
-                /*VerticalPagerIndicator(
+                VerticalPagerIndicator(
                     pagerState = pagerState,
-                    modifier = Modifier.padding(16.dp)
-                )*/
+                    modifier = Modifier.padding(16.dp),
+                    pageCount = pageCount
+                )
             }
 
             ActionsRow(

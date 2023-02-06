@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:Suppress("DEPRECATION")
 package dev.riggaroo.composeplaytime.pager
 
 import android.util.Log
@@ -45,12 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class, ExperimentalPagerApi::class
 )
 @Composable
 fun HorizontalPagerLoopingIndicatorSample() {
@@ -95,14 +96,14 @@ fun HorizontalPagerLoopingIndicatorSample() {
                         .aspectRatio(1f)
                 )
             }
-          /*  HorizontalPagerIndicator(
+            HorizontalPagerIndicator(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
                 pageCount = pageCount,
                 pageIndexMapping = ::pageMapper
-            )*/
+            )
 
             val loopState = remember {
                 mutableStateOf(true)

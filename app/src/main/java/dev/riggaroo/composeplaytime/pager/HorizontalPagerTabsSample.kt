@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,8 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -40,11 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import dev.riggaroo.composeplaytime.R
 import kotlinx.coroutines.launch
 
@@ -77,11 +71,11 @@ fun HorizontalPagerTabsSample() {
             ScrollableTabRow(
                 // Our selected tab is our current page
                 selectedTabIndex = pagerState.currentPage,
-                indicator = { tabPositions ->
+              /*  indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
-                        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions, { it })
                     )
-                }
+                }*/
             ) {
                 // Add tabs for all of our pages
                 pages.forEachIndexed { index, title ->
@@ -118,52 +112,6 @@ fun HorizontalPagerTabsSample() {
                     }
                 }
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerTabIndicatorOffset(
-    pagerState: PagerState,
-    tabPositions: List<TabPosition>,
-    pageIndexMapping: (Int) -> Int = { it },
-): Modifier = layout { measurable, constraints ->
-    if (tabPositions.isEmpty()) {
-        // If there are no pages, nothing to show
-        layout(constraints.maxWidth, 0) {}
-    } else {
-        val currentPage = minOf(tabPositions.lastIndex, pageIndexMapping(pagerState.currentPage))
-        val currentTab = tabPositions[currentPage]
-        val previousTab = tabPositions.getOrNull(currentPage - 1)
-        val nextTab = tabPositions.getOrNull(currentPage + 1)
-        val fraction = pagerState.currentPageOffsetFraction
-        val indicatorWidth = if (fraction > 0 && nextTab != null) {
-            lerp(currentTab.width, nextTab.width, fraction).roundToPx()
-        } else if (fraction < 0 && previousTab != null) {
-            lerp(currentTab.width, previousTab.width, -fraction).roundToPx()
-        } else {
-            currentTab.width.roundToPx()
-        }
-        val indicatorOffset = if (fraction > 0 && nextTab != null) {
-            lerp(currentTab.left, nextTab.left, fraction).roundToPx()
-        } else if (fraction < 0 && previousTab != null) {
-            lerp(currentTab.left, previousTab.left, -fraction).roundToPx()
-        } else {
-            currentTab.left.roundToPx()
-        }
-        val placeable = measurable.measure(
-            Constraints(
-                minWidth = indicatorWidth,
-                maxWidth = indicatorWidth,
-                minHeight = 0,
-                maxHeight = constraints.maxHeight
-            )
-        )
-        layout(constraints.maxWidth, maxOf(placeable.height, constraints.minHeight)) {
-            placeable.placeRelative(
-                indicatorOffset,
-                maxOf(constraints.minHeight - placeable.height, 0)
-            )
         }
     }
 }

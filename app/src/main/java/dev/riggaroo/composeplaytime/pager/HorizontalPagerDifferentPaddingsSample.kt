@@ -19,11 +19,13 @@ package dev.riggaroo.composeplaytime.pager
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +37,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
@@ -45,6 +48,7 @@ import kotlin.math.roundToInt
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")// Sample deals with paddings itself
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Preview
 fun HorizontalPagerDifferentPaddingsSample() {
     Scaffold(
         topBar = {
@@ -53,8 +57,11 @@ fun HorizontalPagerDifferentPaddingsSample() {
             )
         },
         modifier = Modifier.fillMaxSize()
-    ) { _ ->
-        HorizontalPagerDifferentPaddings()
+    ) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            HorizontalPagerDifferentPaddings()
+        }
+
     }
 }
 

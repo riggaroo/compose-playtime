@@ -61,6 +61,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun CenterSnapPager() {
     val pagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier
             .fillMaxSize()
@@ -84,7 +85,7 @@ fun CenterSnapPager() {
                 snapAnimationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
             )
         ) { page ->
-            val coroutineScope = rememberCoroutineScope()
+
             CircleFilterItem(filter = listPageItem[page],
                 pagerState = pagerState,
                 page = page,

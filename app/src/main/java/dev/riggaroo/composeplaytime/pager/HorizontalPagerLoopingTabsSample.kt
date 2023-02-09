@@ -149,7 +149,7 @@ private fun Int.floorMod(other: Int): Int = when (other) {
 
 // Accompanist doesn't support Material 3 TabPositions.
 @OptIn(ExperimentalFoundationApi::class)
-private fun Modifier.pagerTabIndicatorOffset(
+fun Modifier.pagerTabIndicatorOffset(
     pagerState: PagerState,
     tabPositions: List<TabPosition>,
     pageIndexMapping: (Int) -> Int = { it },

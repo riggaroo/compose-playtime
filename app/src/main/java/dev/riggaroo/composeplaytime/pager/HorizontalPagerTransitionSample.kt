@@ -77,7 +77,8 @@ fun HorizontalPagerWithOffsetTransition(modifier: Modifier = Modifier) {
         pageCount = 10,
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 32.dp),
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        state = pagerState
     ) { page ->
         Card(
             Modifier

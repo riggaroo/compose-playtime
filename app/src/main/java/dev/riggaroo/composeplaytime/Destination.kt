@@ -44,5 +44,8 @@ enum class Destination(val route: String) {
     PagerSpinningTransition("pager_spinning"),
     PagerDepthTransition("pager_depth"),
     PagerFadeOutTransition("pager_fade_transition"),
-    PagerFanTransition("pager_fan_transition")
+    PagerFanTransition("pager_fan_transition"),
+    PagerFidgetTransition("pager_fan_fidget_transition"),
+    PagerHingeTransition("pager_hinge_transition"),
+    PagerGateTransition("pager_gate_transition")
 }

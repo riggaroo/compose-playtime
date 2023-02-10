@@ -92,8 +92,10 @@ fun Modifier.pagerCubeInScalingTransition(page: Int, pagerState: PagerState) : M
 
         if (pageOffset.absoluteValue <= 0.5){
             scaleY = .4f.coerceAtLeast(1 - pageOffset.absoluteValue)
+            scaleX = .4f.coerceAtLeast(1 - pageOffset.absoluteValue)
         } else if (pageOffset.absoluteValue <= 1){
             scaleY = .4f.coerceAtLeast(pageOffset.absoluteValue)
+            scaleX = .4f.coerceAtLeast(pageOffset.absoluteValue)
         }
     })
 }

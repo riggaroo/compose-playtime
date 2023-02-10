@@ -1,18 +1,24 @@
 package dev.riggaroo.composeplaytime.pager.transformations
 
+
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
@@ -35,63 +41,53 @@ import kotlin.math.absoluteValue
 @Preview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalPagerWithCubeOutScalingTransition(modifier: Modifier = Modifier) {
+fun HorizontalPagerWithHingeTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState()
     HorizontalPager(
         pageCount = 10,
         modifier = modifier.fillMaxSize(),
         state = pagerState
     ) { page ->
-        Box(
-            Modifier
-                .pagerCubeOutScalingTransition(page, pagerState)
-                .fillMaxSize()
-        ) {
+        Box(Modifier
+            .pagerHingeTransition(page, pagerState)
+            .fillMaxSize()) {
             Image(
-                painter = rememberAsyncImagePainter(
-                    model = rememberRandomSampleImageUrl
-                        (width = 1200)
-                ),
+                painter = rememberAsyncImagePainter(model = rememberRandomSampleImageUrl
+                    (width = 1200)),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .padding(16.dp)
+                    .clip(RoundedCornerShape(16.dp)),
             )
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerCubeOutScalingTransition(page: Int, pagerState: PagerState): Modifier {
+fun Modifier.pagerHingeTransition(page: Int, pagerState: PagerState): Modifier {
     return this.then(graphicsLayer {
         // Calculate the absolute offset for the current page from the
         // scroll position.
         val pageOffset = ((pagerState.currentPage - page) + pagerState
             .currentPageOffsetFraction)
+        translationX = pageOffset * size.width
+        transformOrigin = TransformOrigin(0f, 0f)
+
         if (pageOffset < -1f) {
             // page is far off screen
             alpha = 0f
         } else if (pageOffset <= 0){
             // page is to the right of the selected page or the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(0f, 0.5f)
-            rotationY = 90f * pageOffset.absoluteValue
+            alpha = 1f - pageOffset.absoluteValue
+            rotationZ = 0f
 
         } else if (pageOffset <= 1){
             // page is to the left of the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(1f, 0.5f)
-            rotationY = -90f * pageOffset.absoluteValue
+            alpha = 1f - pageOffset.absoluteValue
+            rotationZ = 90f * pageOffset.absoluteValue
         } else {
             alpha = 0f
-        }
-
-        if (pageOffset.absoluteValue <= 0.5){
-            scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-            scaleX = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-        }
-        else if (pageOffset.absoluteValue <= 1){
-            scaleY = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
-            scaleX = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
         }
     })
 }

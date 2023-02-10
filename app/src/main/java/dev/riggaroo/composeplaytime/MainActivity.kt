@@ -33,6 +33,9 @@ import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCub
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithDepthTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFadeTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFanTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFidgetSpinningTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithGateTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithHingeTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithSpinningTransition
 import dev.riggaroo.composeplaytime.ui.theme.ComposePlaytimeTheme
 
@@ -99,11 +102,19 @@ class MainActivity : ComponentActivity() {
                                 Destination.PagerSpinningTransition ->
                                     HorizontalPagerWithSpinningTransition()
                                 Destination.PagerDepthTransition ->
+                                    // todo
                                     HorizontalPagerWithDepthTransition()
                                 Destination.PagerFadeOutTransition ->
                                     HorizontalPagerWithFadeTransition()
                                 Destination.PagerFanTransition ->
+                                    // todo
                                     HorizontalPagerWithFanTransition()
+                                Destination.PagerFidgetTransition ->
+                                    HorizontalPagerWithFidgetSpinningTransition()
+                                Destination.PagerHingeTransition ->
+                                    HorizontalPagerWithHingeTransition()
+                                Destination.PagerGateTransition ->
+                                    HorizontalPagerWithGateTransition()
                             }
                         }
                     }

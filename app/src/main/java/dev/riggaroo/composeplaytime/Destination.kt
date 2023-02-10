@@ -33,6 +33,16 @@ enum class Destination(val route: String) {
     HorizontalPagerWithIndicator("horizontal_pager_tabs_with_indicator"),
     NestedPagesSample("nested_pages_sample"),
     VerticalPagerBasic("vertical_pager_basic"),
-    VerticalPagerWithIndicator("vertical_pager_with_indicator")
+    VerticalPagerWithIndicator("vertical_pager_with_indicator"),
 
+    PagerWithCubeTransition("pager_cube_out"),
+    PagerWithCubeOutScalingTransition("pager_cube_out_scaling"),
+    PagerWithCubeOutDepthTransition("pager_cube_out_depth"),
+    PagerWithCubeInRotationTransition("pager_cube_in_rotation"),
+    PagerWithCubeInScalingTransition("pager_cube_in_scaling_rotation"),
+    PagerWithCubeInDepthTransition("pager_cube_in_depth"),
+    PagerSpinningTransition("pager_spinning"),
+    PagerDepthTransition("pager_depth"),
+    PagerFadeOutTransition("pager_fade_transition"),
+    PagerFanTransition("pager_fan_transition")
 }

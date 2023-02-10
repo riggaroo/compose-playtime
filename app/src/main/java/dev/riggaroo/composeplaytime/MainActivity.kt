@@ -15,17 +15,25 @@ import androidx.navigation.compose.rememberNavController
 import dev.riggaroo.composeplaytime.pager.CenterSnapPager
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerTabsSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerBasicSample
-import dev.riggaroo.composeplaytime.pager.HorizontalPagerDifferentPaddings
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerDifferentPaddingsSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerLoopingIndicatorSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerLoopingTabsSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerScrollingContentSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerWithIndicatorSample
-import dev.riggaroo.composeplaytime.pager.HorizontalPagerWithOffsetTransition
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerWithOffsetTransitionSample
 import dev.riggaroo.composeplaytime.pager.NestedPagersSample
 import dev.riggaroo.composeplaytime.pager.VerticalPagerBasicSample
 import dev.riggaroo.composeplaytime.pager.VerticalPagerWithIndicatorSample
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInDepthTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInScalingTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeOutDepthTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeOutScalingTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeOutTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithDepthTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFadeTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFanTransition
+import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithSpinningTransition
 import dev.riggaroo.composeplaytime.ui.theme.ComposePlaytimeTheme
 
 class MainActivity : ComponentActivity() {
@@ -76,6 +84,26 @@ class MainActivity : ComponentActivity() {
                                 Destination.VerticalPagerBasic -> VerticalPagerBasicSample()
                                 Destination.VerticalPagerWithIndicator ->
                                     VerticalPagerWithIndicatorSample()
+                                Destination.PagerWithCubeTransition ->
+                                    HorizontalPagerWithCubeOutTransition()
+                                Destination.PagerWithCubeOutScalingTransition ->
+                                    HorizontalPagerWithCubeOutScalingTransition()
+                                Destination.PagerWithCubeOutDepthTransition ->
+                                    HorizontalPagerWithCubeOutDepthTransition()
+                                Destination.PagerWithCubeInRotationTransition ->
+                                    HorizontalPagerWithCubeInTransition()
+                                Destination.PagerWithCubeInScalingTransition ->
+                                    HorizontalPagerWithCubeInScalingTransition()
+                                Destination.PagerWithCubeInDepthTransition ->
+                                    HorizontalPagerWithCubeInDepthTransition()
+                                Destination.PagerSpinningTransition ->
+                                    HorizontalPagerWithSpinningTransition()
+                                Destination.PagerDepthTransition ->
+                                    HorizontalPagerWithDepthTransition()
+                                Destination.PagerFadeOutTransition ->
+                                    HorizontalPagerWithFadeTransition()
+                                Destination.PagerFanTransition ->
+                                    HorizontalPagerWithFanTransition()
                             }
                         }
                     }

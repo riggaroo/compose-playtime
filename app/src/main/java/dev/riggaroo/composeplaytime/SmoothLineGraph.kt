@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 /*
 * Copyright 2022 The Android Open Source Project
@@ -51,7 +53,7 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-fun WeTradeStep2() {
+fun SmoothLineGraph() {
     Box(
         modifier = Modifier
             .background(PurpleBackgroundColor)
@@ -79,8 +81,8 @@ fun WeTradeStep2() {
                 }
                 .drawWithCache {
                     val path = generateSmoothPath(graphData, size)
-                    val filledPath = generateSmoothPath(graphData, size)
-
+                    val filledPath = Path()
+                    filledPath.addPath(path)
                     filledPath.relativeLineTo(0f, size.height)
                     filledPath.lineTo(0f, size.height)
                     filledPath.close()
@@ -221,3 +223,38 @@ data class Balance(val date: LocalDate, val amount: BigDecimal)
 
 val PurpleBackgroundColor = Color(0xff322049)
 val BarColor = Color.White.copy(alpha = 0.3f)
+
+
+@Preview
+@Composable
+fun CoordinateSystem(){
+    Box(modifier = Modifier.fillMaxSize().drawBehind {
+        val barWidthPx = 1.dp.toPx()
+
+        drawRect(Color.White)
+        val verticalLines = size.width / 80.dp.toPx()
+        val verticalSize = size.width / (verticalLines + 1)
+        repeat(verticalLines.roundToInt()) { i ->
+            val startX = verticalSize * (i + 1)
+            drawLine(
+                Color.Gray,
+                start = Offset(startX, 0f),
+                end = Offset(startX, size.height),
+                strokeWidth = barWidthPx
+            )
+        }
+
+        val horizontalLines = size.height / 80.dp.toPx()
+        val sectionSize = size.height / (horizontalLines + 1)
+        repeat(horizontalLines.roundToInt()) { i ->
+            val startY = sectionSize * (i + 1)
+            drawLine(
+                BarColor,
+                start = Offset(0f, startY),
+                end = Offset(size.width, startY),
+                strokeWidth = barWidthPx
+            )
+        }
+
+    })
+}

@@ -21,12 +21,13 @@ This project contains a set of experiments of things made with Jetpack Compose.
 | Spinning | <video src="https://user-images.githubusercontent.com/9973046/226979685-281a035a-4d5a-442a-8435-a202d84093b4.mp4"/>|
 
 
+## Other Experiments
 
-https://user-images.githubusercontent.com/9973046/206245877-d79b836f-cf79-4295-b733-81ef295eea60.mp4
-
-https://user-images.githubusercontent.com/9973046/206245909-f0a2d817-3766-4a4b-b4ab-a9a84fdff3ab.mp4
-
-https://user-images.githubusercontent.com/9973046/206245966-6736bf2c-49d7-4cbe-a78a-9fd2af0b91f5.mp4
+| Experiment | Result |
+|------------|--------|
+| Bouncy Loader | <video src="https://user-images.githubusercontent.com/9973046/206245877-d79b836f-cf79-4295-b733-81ef295eea60.mp4"/> |
+| Hello animation | <video src="https://user-images.githubusercontent.com/9973046/206245909-f0a2d817-3766-4a4b-b4ab-a9a84fdff3ab.mp4"/> |
+| Jellyfish | <video src="https://user-images.githubusercontent.com/9973046/206245966-6736bf2c-49d7-4cbe-a78a-9fd2af0b91f5.mp4"/> |
 
 ## Contributing
 

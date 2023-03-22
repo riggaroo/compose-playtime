@@ -19,7 +19,6 @@ package dev.riggaroo.composeplaytime.pager.transformations
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -46,7 +45,8 @@ fun HorizontalPagerWithFanTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         pageCount = 10,
         modifier = modifier.fillMaxSize(),
-        state = pagerState
+        state = pagerState,
+        beyondBoundsPageCount = 2
     ) { page ->
         Box(Modifier
             .pagerFanTransition(page, pagerState)

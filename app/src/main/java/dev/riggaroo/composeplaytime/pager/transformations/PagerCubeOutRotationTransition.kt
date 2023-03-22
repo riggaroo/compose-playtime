@@ -42,7 +42,8 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         pageCount = 10,
         modifier = modifier.fillMaxSize(),
-        state = pagerState
+        state = pagerState,
+        beyondBoundsPageCount = 2
     ) { page ->
         Box(Modifier
             .pagerCubeOutRotationTransition(page, pagerState)

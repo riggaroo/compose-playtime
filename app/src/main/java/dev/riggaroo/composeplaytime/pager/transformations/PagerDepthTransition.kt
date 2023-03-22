@@ -36,6 +36,9 @@ import kotlin.math.abs
 * limitations under the License.
 */
 
+/**
+ * TODO: zIndex not supported yet in Pager b/265931282
+ */
 @Preview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -44,7 +47,8 @@ fun HorizontalPagerWithDepthTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         pageCount = 10,
         modifier = modifier.fillMaxSize(),
-        state = pagerState
+        state = pagerState,
+        beyondBoundsPageCount = 2
     ) { page ->
         Box(Modifier
             .pagerDepthTransition(page, pagerState)

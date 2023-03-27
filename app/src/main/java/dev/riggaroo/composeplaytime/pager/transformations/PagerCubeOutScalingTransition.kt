@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.rememberAsyncImagePainter
+import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -62,37 +63,33 @@ fun HorizontalPagerWithCubeOutScalingTransition(modifier: Modifier = Modifier) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerCubeOutScalingTransition(page: Int, pagerState: PagerState): Modifier {
-    return this.then(graphicsLayer {
-        // Calculate the absolute offset for the current page from the
-        // scroll position.
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction)
-        if (pageOffset < -1f) {
-            // page is far off screen
-            alpha = 0f
-        } else if (pageOffset <= 0){
-            // page is to the right of the selected page or the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(0f, 0.5f)
-            rotationY = 90f * pageOffset.absoluteValue
+fun Modifier.pagerCubeOutScalingTransition(page: Int, pagerState: PagerState) = graphicsLayer {
+    // Calculate the absolute offset for the current page from the
+    // scroll position.
+    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    if (pageOffset < -1f) {
+        // page is far off screen
+        alpha = 0f
+    } else if (pageOffset <= 0) {
+        // page is to the right of the selected page or the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(0f, 0.5f)
+        rotationY = 90f * pageOffset.absoluteValue
 
-        } else if (pageOffset <= 1){
-            // page is to the left of the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(1f, 0.5f)
-            rotationY = -90f * pageOffset.absoluteValue
-        } else {
-            alpha = 0f
-        }
+    } else if (pageOffset <= 1) {
+        // page is to the left of the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(1f, 0.5f)
+        rotationY = -90f * pageOffset.absoluteValue
+    } else {
+        alpha = 0f
+    }
 
-        if (pageOffset.absoluteValue <= 0.5){
-            scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-            scaleX = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-        }
-        else if (pageOffset.absoluteValue <= 1){
-            scaleY = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
-            scaleX = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
-        }
-    })
+    if (pageOffset.absoluteValue <= 0.5) {
+        scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
+        scaleX = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
+    } else if (pageOffset.absoluteValue <= 1) {
+        scaleY = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
+        scaleX = 0.4f.coerceAtLeast(pageOffset.absoluteValue)
+    }
 }

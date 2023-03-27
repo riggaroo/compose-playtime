@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -47,15 +48,20 @@ fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
         state = pagerState,
         beyondBoundsPageCount = 2
     ) { page ->
-        Box(Modifier
-            .pagerFadeTransition(page, pagerState)
-            .fillMaxSize()) {
+        Box(
+            Modifier
+                .pagerFadeTransition(page, pagerState)
+                .fillMaxSize()
+        ) {
             Image(
-                painter = rememberAsyncImagePainter(model = rememberRandomSampleImageUrl
-                    (width = 1200)),
+                painter = rememberAsyncImagePainter(
+                    model = rememberRandomSampleImageUrl
+                        (width = 1200)
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(16.dp)
                     .clip(RoundedCornerShape(16.dp)),
             )
@@ -64,11 +70,9 @@ fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerFadeTransition(page: Int, pagerState: PagerState) : Modifier {
-    return this.then(graphicsLayer {
-        val pageOffset = ((pagerState.currentPage - page)
-                + pagerState.currentPageOffsetFraction)
+fun Modifier.pagerFadeTransition(page: Int, pagerState: PagerState) =
+    graphicsLayer {
+        val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
         translationX = pageOffset * size.width
-        alpha = 1- pageOffset.absoluteValue
-    })
-}
+        alpha = 1 - pageOffset.absoluteValue
+    }

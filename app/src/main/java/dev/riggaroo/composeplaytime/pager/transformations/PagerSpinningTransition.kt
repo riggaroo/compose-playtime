@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -47,15 +48,20 @@ fun HorizontalPagerWithSpinningTransition(modifier: Modifier = Modifier) {
         state = pagerState,
         beyondBoundsPageCount = 2
     ) { page ->
-        Box(Modifier
-            .pagerSpinningAntiClockwiseTransition(page, pagerState)
-            .fillMaxSize()) {
+        Box(
+            Modifier
+                .pagerSpinningAntiClockwiseTransition(page, pagerState)
+                .fillMaxSize()
+        ) {
             Image(
-                painter = rememberAsyncImagePainter(model = rememberRandomSampleImageUrl
-                    (width = 1200)),
+                painter = rememberAsyncImagePainter(
+                    model = rememberRandomSampleImageUrl
+                        (width = 1200)
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(16.dp)
                     .clip(RoundedCornerShape(16.dp)),
             )
@@ -64,7 +70,7 @@ fun HorizontalPagerWithSpinningTransition(modifier: Modifier = Modifier) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState) : Modifier {
+fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState): Modifier {
     return this.then(graphicsLayer {
         // Calculate the absolute offset for the current page from the
         // scroll position.
@@ -72,15 +78,15 @@ fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState)
             .currentPageOffsetFraction)
         translationX = pageOffset * size.width
 
-        if (pageOffset < -1f){
+        if (pageOffset < -1f) {
             // page is far off screen
             alpha = 0f
-        } else if (pageOffset <= 0){
+        } else if (pageOffset <= 0) {
             // page is to the right of the selected page or the selected page
             alpha = 1f
             rotationZ = -360f * pageOffset.absoluteValue
 
-        } else if (pageOffset <= 1){
+        } else if (pageOffset <= 1) {
             // page is to the left of the selected page
             alpha = 1f
             rotationZ = 360f * pageOffset.absoluteValue
@@ -100,23 +106,22 @@ fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerSpinningAntiClockwiseTransition(page: Int, pagerState: PagerState) : Modifier {
-    return this.then(graphicsLayer {
+fun Modifier.pagerSpinningAntiClockwiseTransition(page: Int, pagerState: PagerState) =
+    graphicsLayer {
         // Calculate the absolute offset for the current page from the
         // scroll position.
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction)
+        val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
         translationX = pageOffset * size.width
 
-        if (pageOffset < -1f){
+        if (pageOffset < -1f) {
             // page is far off screen
             alpha = 0f
-        } else if (pageOffset <= 0){
+        } else if (pageOffset <= 0) {
             // page is to the right of the selected page or the selected page
             alpha = 1f
             rotationZ = 360f * pageOffset.absoluteValue
 
-        } else if (pageOffset <= 1){
+        } else if (pageOffset <= 1) {
             // page is to the left of the selected page
             alpha = 1f
             rotationZ = -360f * pageOffset.absoluteValue
@@ -132,5 +137,4 @@ fun Modifier.pagerSpinningAntiClockwiseTransition(page: Int, pagerState: PagerSt
             alpha = 0f
         }
 
-    })
-}
+    }

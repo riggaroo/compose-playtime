@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -59,7 +60,8 @@ fun HorizontalPagerWithCubeOutDepthTransition(modifier: Modifier = Modifier) {
                 ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(16.dp)
                     .clip(RoundedCornerShape(16.dp)),
             )
@@ -68,34 +70,30 @@ fun HorizontalPagerWithCubeOutDepthTransition(modifier: Modifier = Modifier) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerCubeOutDepthTransition(page: Int, pagerState: PagerState): Modifier {
-    return this.then(graphicsLayer {
-        // Calculate the absolute offset for the current page from the
-        // scroll position.
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction)
-        if (pageOffset < -1f) {
-            // page is far off screen
-            alpha = 0f
-        } else if (pageOffset <= 0){
-            // page is to the right of the selected page or the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(0f, 0.5f)
-            rotationY = 90f * pageOffset.absoluteValue
-        } else if (pageOffset <= 1){
-            // page is to the left of the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(1f, 0.5f)
-            rotationY = -90f * pageOffset.absoluteValue
-        } else {
-            alpha = 0f
-        }
+fun Modifier.pagerCubeOutDepthTransition(page: Int, pagerState: PagerState) = graphicsLayer {
+    // Calculate the absolute offset for the current page from the
+    // scroll position.
+    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    if (pageOffset < -1f) {
+        // page is far off screen
+        alpha = 0f
+    } else if (pageOffset <= 0) {
+        // page is to the right of the selected page or the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(0f, 0.5f)
+        rotationY = 90f * pageOffset.absoluteValue
+    } else if (pageOffset <= 1) {
+        // page is to the left of the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(1f, 0.5f)
+        rotationY = -90f * pageOffset.absoluteValue
+    } else {
+        alpha = 0f
+    }
 
-        if (pageOffset.absoluteValue <= 0.5){
-            scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-        }
-        else if (pageOffset.absoluteValue <= 1){
-            scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
-        }
-    })
+    if (pageOffset.absoluteValue <= 0.5) {
+        scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
+    } else if (pageOffset.absoluteValue <= 1) {
+        scaleY = 0.4f.coerceAtLeast(1 - pageOffset.absoluteValue)
+    }
 }

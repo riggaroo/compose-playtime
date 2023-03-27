@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
+import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -45,12 +46,16 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
         state = pagerState,
         beyondBoundsPageCount = 2
     ) { page ->
-        Box(Modifier
-            .pagerCubeOutRotationTransition(page, pagerState)
-            .fillMaxSize()) {
+        Box(
+            Modifier
+                .pagerCubeOutRotationTransition(page, pagerState)
+                .fillMaxSize()
+        ) {
             Image(
-                painter = rememberAsyncImagePainter(model = rememberRandomSampleImageUrl
-                    (width = 1200)),
+                painter = rememberAsyncImagePainter(
+                    model = rememberRandomSampleImageUrl
+                        (width = 1200)
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
@@ -60,51 +65,44 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerCubeOutRotationTransition(page: Int, pagerState: PagerState) : Modifier {
-    return this.then(graphicsLayer {
-        // Calculate the absolute offset for the current page from the
-        // scroll position.
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction)
-        if (pageOffset < -1f){
-            // page is far off screen
-            alpha = 0f
-        } else if (pageOffset <= 0){
-            // page is to the right of the selected page or the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(0f, 0.5f)
-            rotationY = 90f * pageOffset.absoluteValue
+fun Modifier.pagerCubeOutRotationTransition(page: Int, pagerState: PagerState) = graphicsLayer {
+    // Calculate the absolute offset for the current page from the
+    // scroll position.
+    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    if (pageOffset < -1f) {
+        // page is far off screen
+        alpha = 0f
+    } else if (pageOffset <= 0) {
+        // page is to the right of the selected page or the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(0f, 0.5f)
+        rotationY = 90f * pageOffset.absoluteValue
 
-        } else if (pageOffset <= 1){
-            // page is to the left of the selected page
-            alpha = 1f
-            transformOrigin = TransformOrigin(1f, 0.5f)
-            rotationY = -90f * pageOffset.absoluteValue
-        } else {
-            alpha = 0f
-        }
-    })
+    } else if (pageOffset <= 1) {
+        // page is to the left of the selected page
+        alpha = 1f
+        transformOrigin = TransformOrigin(1f, 0.5f)
+        rotationY = -90f * pageOffset.absoluteValue
+    } else {
+        alpha = 0f
+    }
 }
-
-
 
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.pagerFadeOutTransition(page: Int, pagerState: PagerState) : Modifier {
-    return this.then(graphicsLayer {
-        // Calculate the absolute offset for the current page from the
-        // scroll position. We use the absolute value which allows us to mirror
-        // any effects for both directions
-        val pageOffset = ((pagerState.currentPage - page) + pagerState
-            .currentPageOffsetFraction).absoluteValue
+fun Modifier.pagerFadeOutTransition(page: Int, pagerState: PagerState) = graphicsLayer {
+    // Calculate the absolute offset for the current page from the
+    // scroll position. We use the absolute value which allows us to mirror
+    // any effects for both directions
+    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
 
-        alpha = lerp(
-            start = 0.5f,
-            stop = 1f,
-            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-        )
-        translationX = (-page * size.width)
-    })
+    alpha = lerp(
+        start = 0.5f,
+        stop = 1f,
+        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+    )
+    translationX = (-page * size.width)
 }
+
 
 
 

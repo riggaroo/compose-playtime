@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ComposePlaytime"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".CutoutActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ComposePlaytime">

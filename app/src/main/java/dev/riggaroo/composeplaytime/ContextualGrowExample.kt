@@ -1,5 +1,6 @@
 package dev.riggaroo.composeplaytime
 
+import androidx.annotation.Px
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -50,17 +52,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.Dialog
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
@@ -103,7 +115,18 @@ fun HomeScreen(onRentalClicked: () -> Unit) {
         mutableStateOf(false)
     }
     val transition = updateTransition(targetState = advancedSearch, label = "")
-
+    var clickedChip by remember {
+        mutableStateOf(false)
+    }
+    var chipPosition by remember {
+        mutableStateOf(Offset.Infinite)
+    }
+    var chipSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    var openFilterDialog by remember {
+        mutableStateOf(false)
+    }
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
@@ -117,9 +140,7 @@ fun HomeScreen(onRentalClicked: () -> Unit) {
                 advancedSearch = !advancedSearch
             }
         )
-        var openFilterDialog by remember {
-            mutableStateOf(false)
-        }
+
         val chipScrollableState = rememberScrollState()
         LazyColumn(modifier = Modifier
             .weight(1f)
@@ -132,11 +153,29 @@ fun HomeScreen(onRentalClicked: () -> Unit) {
                     .horizontalScroll(chipScrollableState)) {
                     Spacer(modifier = Modifier.width(12.dp))
                     repeat(50) {
-                        Chip(onClick = {
-                            openFilterDialog = true
-                        }, modifier = Modifier.padding(4.dp)) {
-                            Text("                ")
+                        val locationOnScreen = remember {
+                            mutableStateOf(Offset.Unspecified)
                         }
+                        var size by remember {
+                            mutableStateOf(IntSize.Zero)
+                        }
+                        val movableChip = remember {
+                            movableContentOf {
+                                Chip(onClick = {
+                                    clickedChip = true
+                                    chipPosition = locationOnScreen.value
+                                    chipSize = size
+                                }, modifier = Modifier.padding(4.dp)
+                                    .onGloballyPositioned {
+                                        locationOnScreen.value = it.positionInRoot()
+                                        size = it.size
+                                    }
+                                ) {
+                                    Text("                ")
+                                }
+                            }
+                        }
+                        movableChip()
                     }
 
                 }
@@ -148,34 +187,72 @@ fun HomeScreen(onRentalClicked: () -> Unit) {
                 })
             }
         }
-        if (openFilterDialog) {
-            Dialog(onDismissRequest = {
-                openFilterDialog = false
-            }) {
-                Box(modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.White)
-                    .fillMaxWidth()
-                    .height(300.dp)
-                ) {
 
-                }
+
+        BottomBar()
+    }
+    if (openFilterDialog) {
+        Dialog(onDismissRequest = {
+            openFilterDialog = false
+        }) {
+            Box(modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
+                .fillMaxWidth()
+                .height(300.dp)
+            ) {
+
             }
         }
+    }
 
-        BottomAppBar(modifier = Modifier
-            .fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()) {
-                TabItem(Icons.Filled.Search, "Explore")
-                TabItem(Icons.Filled.HeartBroken, "Wishlist")
-                TabItem(Icons.Filled.Map, "Trips")
-                TabItem(Icons.Filled.Message, "Inbox")
-                TabItem(Icons.Filled.Person, "Profile")
+    if (clickedChip) {
+        val widthDp = with(LocalDensity.current) {
+            chipSize.width.toDp()
+        }
+        val heightDp = with(LocalDensity.current) {
+            chipSize.height.toDp()
+        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.graphicsLayer {
+                translationX = chipPosition.x
+                translationY = chipPosition.y
+            }
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.Red)
+                .size(width = widthDp, height = heightDp)
+                .padding(4.dp)
+                ) {
+
             }
         }
     }
 }
+
+@Composable
+private fun ChipOverlay(offset: Offset) {
+
+}
+
+@Composable
+private fun BottomBar() {
+    BottomAppBar(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TabItem(Icons.Filled.Search, "Explore")
+            TabItem(Icons.Filled.HeartBroken, "Wishlist")
+            TabItem(Icons.Filled.Map, "Trips")
+            TabItem(Icons.Filled.Message, "Inbox")
+            TabItem(Icons.Filled.Person, "Profile")
+        }
+    }
+}
+
 @Composable
 fun RentalCard(modifier: Modifier = Modifier) {
     Column(modifier.padding(16.dp)) {

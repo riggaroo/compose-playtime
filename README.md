@@ -28,6 +28,7 @@ This project contains a set of experiments of things made with Jetpack Compose.
 | Bouncy Loader | <video src="https://user-images.githubusercontent.com/9973046/206245877-d79b836f-cf79-4295-b733-81ef295eea60.mp4"/> |
 | Hello animation | <video src="https://user-images.githubusercontent.com/9973046/206245909-f0a2d817-3766-4a4b-b4ab-a9a84fdff3ab.mp4"/> |
 | Jellyfish | <video src="https://user-images.githubusercontent.com/9973046/206245966-6736bf2c-49d7-4cbe-a78a-9fd2af0b91f5.mp4"/> |
+| Flow Layout Toggles | <video src="https://github.com/riggaroo/compose-playtime/assets/9973046/f3ed90a2-a42a-4595-b43e-59a97e817d62" /> | 
 
 ## Contributing
 

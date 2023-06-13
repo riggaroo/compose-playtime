@@ -51,7 +51,7 @@ fun VerticalPagerWithIndicatorSample() {
         modifier = Modifier.fillMaxSize()
     ) { padding ->
         Column(Modifier.fillMaxSize()) {
-            val pagerState = rememberPagerState()
+            val pagerState = rememberPagerState(pageCount = { 10 })
             val pageCount = 10
 
             Row(
@@ -62,7 +62,6 @@ fun VerticalPagerWithIndicatorSample() {
             ) {
                 // Display 10 items
                 VerticalPager(
-                    pageCount = pageCount,
                     state = pagerState,
                     // Add 32.dp vertical padding to 'center' the pages
                     contentPadding = PaddingValues(vertical = 32.dp),

@@ -60,7 +60,9 @@ import kotlin.math.absoluteValue
 @Preview
 @Composable
 fun CenterSnapPager() {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = {
+        listPageItem.size
+    })
     val coroutineScope = rememberCoroutineScope()
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier
@@ -69,7 +71,6 @@ fun CenterSnapPager() {
         val pageSize = 70.dp
         HorizontalPager(
             state = pagerState,
-            pageCount = listPageItem.size,
             pageSize = PageSize.Fixed(pageSize = pageSize),
             modifier = Modifier
                 .fillMaxWidth()

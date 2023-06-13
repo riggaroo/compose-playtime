@@ -39,10 +39,9 @@ import dev.riggaroo.composeplaytime.pager.transformations.pagerFadeTransition
 fun LineIndicatorExample() {
     Box(modifier = Modifier.fillMaxSize()) {
         val pageCount = 5
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState(pageCount = { pageCount })
         val destinations = listOf("Maldives", "Cape Town", "London", "Greece", "New York")
         HorizontalPager(
-            pageCount = pageCount,
             beyondBoundsPageCount = 2,
             state = pagerState
         ) { page ->

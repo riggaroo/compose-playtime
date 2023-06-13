@@ -69,15 +69,13 @@ fun HorizontalPagerLoopingIndicatorSample() {
             // We start the pager in the middle of the raw number of pages
             val loopingCount = Int.MAX_VALUE
             val startIndex = loopingCount / 2
-            val pagerState = rememberPagerState(initialPage = startIndex)
+            val pagerState = rememberPagerState(initialPage = startIndex, pageCount = { loopingCount })
 
             fun pageMapper(index: Int): Int {
                 return (index - startIndex).floorMod(pageCount)
             }
 
             HorizontalPager(
-                // Set the raw page count to a really large number
-                pageCount = loopingCount,
                 state = pagerState,
                 // Add 32.dp horizontal padding to 'center' the pages
                 contentPadding = PaddingValues(horizontal = 32.dp),

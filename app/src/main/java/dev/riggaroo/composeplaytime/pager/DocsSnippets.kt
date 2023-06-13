@@ -56,7 +56,10 @@ import kotlin.math.absoluteValue
 fun HorizontalPagerSample() {
     // [START android_compose_layouts_pager_horizontal_basic]
     // Display 10 items
-    HorizontalPager(pageCount = 10) { page ->
+    val pagerState = rememberPagerState {
+        10
+    }
+    HorizontalPager(state = pagerState) { page ->
         // Our page content
         Text(
             text = "Page: $page",
@@ -71,7 +74,10 @@ fun HorizontalPagerSample() {
 fun VerticalPagerSample() {
     // [START android_compose_layouts_pager_vertical_basic]
     // Display 10 items
-    VerticalPager(pageCount = 10) { page ->
+    val pagerState = rememberPagerState {
+        10
+    }
+    VerticalPager(state = pagerState) { page ->
         // Our page content
         Text(
             text = "Page: $page",
@@ -86,11 +92,11 @@ fun VerticalPagerSample() {
 @Composable
 fun HorizontalPagerIndicatorSample() {
     // [START android_compose_layouts_pager_horizontal_indicator]
-    val pagerState = rememberPagerState()
     val pageCount = 10
+    val pagerState = rememberPagerState(pageCount = { pageCount })
     Column {
         // Display 10 items
-        HorizontalPager(pageCount = pageCount) { page ->
+        HorizontalPager(state = pagerState) { page ->
             // Our page content
             Text(
                 text = "Page: $page",
@@ -111,9 +117,9 @@ fun HorizontalPagerIndicatorSample() {
 fun PagerScrollToItem() {
     Box {
         // [START android_compose_layouts_pager_scroll]
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState(pageCount = { 10 })
 
-        HorizontalPager(pageCount = 10, state = pagerState) { page ->
+        HorizontalPager(state = pagerState) { page ->
             // Our page content
             Text(
                 text = "Page: $page",
@@ -142,9 +148,9 @@ fun PagerScrollToItem() {
 fun PagerAnimateToItem() {
     Box {
         // [START android_compose_layouts_pager_scroll_animate]
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState(pageCount = { 10 })
 
-        HorizontalPager(pageCount = 10, state = pagerState) { page ->
+        HorizontalPager(state = pagerState) { page ->
             // Our page content
             Text(
                 text = "Page: $page",
@@ -173,7 +179,7 @@ fun PagerAnimateToItem() {
 @Composable
 fun PageChangesSample() {
     // [START android_compose_layouts_pager_notify_page_changes]
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 10 })
 
     LaunchedEffect(pagerState) {
         // Collect from the a snapshotFlow reading the currentPage
@@ -185,7 +191,6 @@ fun PageChangesSample() {
     }
 
     VerticalPager(
-        pageCount = 10,
         state = pagerState,
     ) { page ->
         Text(text = "Page: $page")
@@ -199,7 +204,7 @@ fun PageChangesSample() {
 fun PagerWithTabsExample() {
     val pages = listOf("Movies", "Books", "Shows", "Fun")
     // [START android_compose_layouts_pager_tabs]
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { pages.size })
 
     TabRow(
         // Our selected tab is our current page
@@ -222,7 +227,6 @@ fun PagerWithTabsExample() {
     }
 
     HorizontalPager(
-        pageCount = pages.size,
         state = pagerState,
     ) { page ->
         Text("Page: ${pages[page]}")
@@ -234,8 +238,8 @@ fun PagerWithTabsExample() {
 @Composable
 fun PagerWithEffect() {
     // [START android_compose_layouts_pager_transformation]
-    val pagerState = rememberPagerState()
-    HorizontalPager(pageCount = 4, state = pagerState) { page ->
+    val pagerState = rememberPagerState(pageCount = { 4 })
+    HorizontalPager(state = pagerState) { page ->
         Card(
             Modifier
                 .size(200.dp)
@@ -275,8 +279,9 @@ fun PagerWithEffect() {
 @Preview
 fun PagerStartPadding() {
     // [START android_compose_layouts_pager_padding_start]
+    val pagerState = rememberPagerState(pageCount = { 4 })
     HorizontalPager(
-        pageCount = 4,
+        state = pagerState,
         contentPadding = PaddingValues(start = 64.dp),
     ) { page ->
         // page content
@@ -288,8 +293,9 @@ fun PagerStartPadding() {
 @Composable
 fun PagerHorizontalPadding() {
     // [START android_compose_layouts_pager_padding_horizontal]
+    val pagerState = rememberPagerState(pageCount = { 4 })
     HorizontalPager(
-        pageCount = 4,
+        state = pagerState,
         contentPadding = PaddingValues(horizontal = 32.dp),
     ) { page ->
         // page content
@@ -301,8 +307,9 @@ fun PagerHorizontalPadding() {
 @Composable
 fun PagerEndPadding() {
     // [START android_compose_layouts_pager_padding_end]
+    val pagerState = rememberPagerState(pageCount = { 4 })
     HorizontalPager(
-        pageCount = 4,
+        state = pagerState,
         contentPadding = PaddingValues(end = 64.dp),
     ) { page ->
         // page content
@@ -314,8 +321,9 @@ fun PagerEndPadding() {
 @Composable
 fun PagerCustomSizes() {
     // [START android_compose_layouts_pager_custom_size]
+    val pagerState = rememberPagerState(pageCount = { 4 })
     HorizontalPager(
-        pageCount = 4,
+        state = pagerState,
         pageSize = PageSize.Fixed(100.dp)
     ) { page ->
         // page content
@@ -327,8 +335,9 @@ fun PagerCustomSizes() {
 @Composable
 fun PagerWithTabs() {
     // [START android_compose_layouts_pager_with_tabs]
+    val pagerState = rememberPagerState(pageCount = { 4 })
     HorizontalPager(
-        pageCount = 4
+        state = pagerState,
     ) { page ->
         // page content
     }

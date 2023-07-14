@@ -42,9 +42,8 @@ import kotlin.math.pow
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithFidgetSpinningTransition(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 10 })
     HorizontalPager(
-        pageCount = 10,
         modifier = modifier.fillMaxSize(),
         state = pagerState,
         beyondBoundsPageCount = 2

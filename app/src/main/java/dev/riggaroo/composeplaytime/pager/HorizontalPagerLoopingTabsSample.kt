@@ -74,7 +74,7 @@ fun HorizontalPagerLoopingTabsSample() {
             // We start the pager in the middle of the raw number of pages
             val loopingCount = Int.MAX_VALUE
             val startIndex = loopingCount / 2
-            val pagerState = rememberPagerState(initialPage = startIndex)
+            val pagerState = rememberPagerState(initialPage = startIndex, pageCount = { loopingCount })
 
             fun pageMapper(index: Int): Int {
                 return (index - startIndex).floorMod(pages.count())
@@ -88,7 +88,7 @@ fun HorizontalPagerLoopingTabsSample() {
                 // Our selected tab is our current page
                 selectedTabIndex = currentIndex,
                 indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
+                    TabRowDefaults.SecondaryIndicator(
                         Modifier.pagerTabIndicatorOffset(pagerState, tabPositions,
                             ::pageMapper)
                     )
@@ -121,7 +121,6 @@ fun HorizontalPagerLoopingTabsSample() {
             }
 
             HorizontalPager(
-                pageCount = loopingCount,
                 state = pagerState,
                 // Add 16.dp padding to 'center' the pages
                 contentPadding = PaddingValues(16.dp),

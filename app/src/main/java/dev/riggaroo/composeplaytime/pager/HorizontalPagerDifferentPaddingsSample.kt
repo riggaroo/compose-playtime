@@ -75,9 +75,8 @@ fun HorizontalPagerDifferentPaddingsSample() {
 fun HorizontalPagerDifferentPaddings() {
     val count = 4
     val padding = 16.dp
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { count })
     HorizontalPager(
-        pageCount = count,
         state = pagerState,
         contentPadding = PaddingValues(horizontal = padding),
         modifier = Modifier.fillMaxSize()

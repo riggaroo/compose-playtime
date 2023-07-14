@@ -66,7 +66,7 @@ fun HorizontalPagerTabsSample() {
             val coroutineScope = rememberCoroutineScope()
 
             // Remember a PagerState
-            val pagerState = rememberPagerState()
+            val pagerState = rememberPagerState(pageCount = { pages.size })
 
             ScrollableTabRow(
                 // Our selected tab is our current page
@@ -93,7 +93,6 @@ fun HorizontalPagerTabsSample() {
             }
 
             HorizontalPager(
-                pageCount = pages.size,
                 state = pagerState,
                 // Add 16.dp padding to 'center' the pages
                 contentPadding = PaddingValues(16.dp),

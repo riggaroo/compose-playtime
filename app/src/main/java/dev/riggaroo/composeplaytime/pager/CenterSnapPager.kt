@@ -55,12 +55,13 @@ import kotlin.math.absoluteValue
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+// Clicking on an item in the pager doesn't always select the item https://issuetracker.google.com/268160207
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun CenterSnapPager() {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { listPageItem.size})
     val coroutineScope = rememberCoroutineScope()
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier
@@ -69,7 +70,6 @@ fun CenterSnapPager() {
         val pageSize = 70.dp
         HorizontalPager(
             state = pagerState,
-            pageCount = listPageItem.size,
             pageSize = PageSize.Fixed(pageSize = pageSize),
             modifier = Modifier
                 .fillMaxWidth()

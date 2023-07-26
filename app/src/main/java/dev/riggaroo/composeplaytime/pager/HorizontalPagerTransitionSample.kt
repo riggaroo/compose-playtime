@@ -72,9 +72,8 @@ fun HorizontalPagerWithOffsetTransitionSample() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithOffsetTransition(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 10 })
     HorizontalPager(
-        pageCount = 10,
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 32.dp),
         modifier = modifier.fillMaxSize(),

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,14 +43,16 @@ fun NestedPagersSample() {
         },
         modifier = Modifier.fillMaxSize()
     ) { padding ->
+        val pagerState = rememberPagerState(pageCount = { 10 })
         VerticalPager(
-            pageCount = 10,
+            state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
         ) {
+            val horizontalPagerState = rememberPagerState(pageCount = { 5 })
             HorizontalPager(
-                pageCount = 5,
+                state = horizontalPagerState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)

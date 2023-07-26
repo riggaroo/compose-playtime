@@ -54,11 +54,9 @@ fun HorizontalPagerWithIndicatorSample() {
             Modifier
                 .fillMaxSize()
                 .padding(padding)) {
-            val pagerState = rememberPagerState()
-            val pageCount = 10
+            val pagerState = rememberPagerState(pageCount = { 10 })
             // Display 10 items
             HorizontalPager(
-                pageCount = pageCount,
                 state = pagerState,
                 // Add 32.dp horizontal padding to 'center' the pages
                 contentPadding = PaddingValues(horizontal = 32.dp),
@@ -79,7 +77,7 @@ fun HorizontalPagerWithIndicatorSample() {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
-                pageCount = pageCount
+                pageCount = pagerState.pageCount
             )
 
             ActionsRow(

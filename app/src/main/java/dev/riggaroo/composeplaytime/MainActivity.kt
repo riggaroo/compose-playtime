@@ -5,6 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.togetherWith
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -54,7 +59,13 @@ class MainActivity : ComponentActivity() {
                         })
                     }
                     Destination.values().forEach { destination ->
-                        composable(destination.route) {
+                        composable(destination.route, enterTransition = {
+                            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left
+                                , animationSpec = tween(300, easing = EaseInOut))
+                        }, exitTransition = {
+                            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right
+                                , animationSpec = tween(300, easing = EaseInOut))
+                        }) {
                             when (destination) {
                                 Destination.BouncyLoader ->
                                     BouncyLoader()

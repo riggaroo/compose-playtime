@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
  *
  * @param visibleEvent function that will run when the item becomes visible or invisible.
  */
-fun Modifier.onVisibleChange(visibleEvent: (VisibleEvent) -> Unit) =
+fun Modifier.onVisibilityChanged(visibleEvent: (VisibleEvent) -> Unit) =
     this.then(VisibilityAwareModifierElement(visibleEvent))
 
 sealed class VisibleEvent {
@@ -41,6 +41,13 @@ sealed class VisibleEvent {
     ) : VisibleEvent()
 
     object Invisible : VisibleEvent()
+
+    data class OnPositionChanged(
+        val visibleRect: Rect,
+        val size: IntSize,
+        val fractionVisibleWidth: Float,
+        val fractionVisibleHeight: Float
+    ): VisibleEvent()
 }
 
 private class VisibilityAwareModifierNode(var visibleEventCallback: (VisibleEvent) -> Unit) :
@@ -58,23 +65,27 @@ private class VisibilityAwareModifierNode(var visibleEventCallback: (VisibleEven
             val fractionVisibleWidth = bounds.width / size.width.toFloat()
             val fractionVisibleHeight = bounds.height / size.height.toFloat()
 
-            // TODO: Decide if we want to check the bounds change too,
-            //  it'll fire the event multiple times if we check the bounds... maybe we should have two callbacks,
-            //  one for onEnter, onExit and onPositionChanged?
-            if (isVisible != visible /*|| visibleBounds != bounds*/) {
-                if (visible) {
-                    visibleEventCallback(
-                        VisibleEvent.Visible(
-                            bounds,
-                            size,
-                            fractionVisibleWidth,
-                            fractionVisibleHeight
-                        )
-                    )
-                } else {
-                    visibleEventCallback(VisibleEvent.Invisible)
-                }
 
+            if (isVisible != visible || bounds != visibleBounds) {
+                if (isVisible == visible) {
+                    visibleEventCallback(VisibleEvent.OnPositionChanged(bounds,
+                        size,
+                        fractionVisibleWidth,
+                        fractionVisibleHeight))
+                } else {
+                    if (visible) {
+                        visibleEventCallback(
+                            VisibleEvent.Visible(
+                                bounds,
+                                size,
+                                fractionVisibleWidth,
+                                fractionVisibleHeight
+                            )
+                        )
+                    } else {
+                        visibleEventCallback(VisibleEvent.Invisible)
+                    }
+                }
                 isVisible = visible
                 visibleBounds = bounds
             }

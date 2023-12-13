@@ -30,6 +30,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -66,14 +67,18 @@ import kotlin.random.Random
 private fun VisibleNormalScenario() {
     Box {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            repeat(30) {count ->
+            repeat(30) { item ->
                 Box(modifier = Modifier
                     .size(100.dp)
                     .background(randomColor())
-                    .onVisibleChange {
-                        println("item: $count, $it")
+                    .onVisibilityChanged { event ->
+                        when (event) {
+                            VisibleEvent.Invisible -> println("visibility: item $item - invisible")
+                            is VisibleEvent.OnPositionChanged ->  println("visibility: item $item - position changed $event")
+                            is VisibleEvent.Visible ->  println("visibility: item $item - visible $event")
+                        }
                     }){
-                    Text(count.toString(), fontSize = 22.sp)
+                    Text(item.toString(), fontSize = 22.sp)
                 }
             }
         }
@@ -97,7 +102,7 @@ private fun VisibleZOrder() {
                 Box(modifier = Modifier
                     .size(100.dp)
                     .background(randomColor())
-                    .onVisibleChange {
+                    .onVisibilityChanged {
                         println("bottom layer item visible event: $count, $it")
                     }){
                     Text(count.toString(), fontSize = 22.sp)
@@ -107,7 +112,7 @@ private fun VisibleZOrder() {
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.Blue)
-            .onVisibleChange {
+            .onVisibilityChanged {
                 println("top layer item visible event: $it")
             })
     }
@@ -134,7 +139,7 @@ private fun VisibilityPager() {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .onVisibleChange {
+                .onVisibilityChanged {
                     println("Visible change $page: $it")
                 }
         )
@@ -150,7 +155,7 @@ private fun VisibleLazy() {
                 Box(modifier = Modifier
                     .size(100.dp)
                     .background(randomColor())
-                    .onVisibleChange {
+                    .onVisibilityChanged {
                         println("item: $count, $it")
                     }) {
                     Text(count.toString(), fontSize = 22.sp)
@@ -168,7 +173,7 @@ private fun VisibleWindow() {
             Box(modifier = Modifier
                 .size(100.dp)
                 .background(randomColor())
-                .onVisibleChange {
+                .onVisibilityChanged {
                     println("bottom layer item visible event: $count, $it")
                 }){
                 Text(count.toString(), fontSize = 22.sp)
@@ -188,7 +193,7 @@ private fun VisibleNavigationCompose() {
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Red)
-                .onVisibleChange {
+                .onVisibilityChanged {
                     println("visible profile $it")
                 }
                 .clickable {
@@ -200,7 +205,7 @@ private fun VisibleNavigationCompose() {
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Blue)
-                .onVisibleChange {
+                .onVisibilityChanged {
                     println("visible friendslist $it")
                 }
                 .clickable {
@@ -223,7 +228,7 @@ private fun VisibleBottomSheet() {
             Box(modifier = Modifier
                 .size(100.dp)
                 .background(randomColor())
-                .onVisibleChange {
+                .onVisibilityChanged {
                     println("bottom layer item visible event: $count, $it")
                 }
                 .clickable {
@@ -235,7 +240,7 @@ private fun VisibleBottomSheet() {
     }
     if (showBottomSheet) {
         ModalBottomSheet(
-            modifier = Modifier.onVisibleChange {
+            modifier = Modifier.onVisibilityChanged {
                 println("Visible Change bottom sheet: $it")
             },
             onDismissRequest = {
@@ -251,7 +256,7 @@ private fun VisibleBottomSheet() {
                     }
                 }
             }) {
-                Text("Hide bottom sheet", modifier = Modifier.onVisibleChange {
+                Text("Hide bottom sheet", modifier = Modifier.onVisibilityChanged {
                     println("Visible event: Text Modal bottom sheet: $it")
                 })
             }
@@ -267,7 +272,7 @@ private fun VisibleFragment() {
 
 @Composable
 fun VisibilityCustomView() {
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableIntStateOf(0) }
     // Adds view to Compose
     AndroidView(
         modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
@@ -314,7 +319,7 @@ fun VisibleKeyboardObstruction() {
                         .size(100.dp)
                         .padding(8.dp)
                         .background(Color.LightGray)
-                        .onVisibleChange {
+                        .onVisibilityChanged {
                             println("item: $count, $it")
                         }){
                         Text(count.toString(), fontSize = 22.sp)
@@ -346,7 +351,7 @@ private fun VisibilityWindowCompose() {
 
     if (openDialog.value) {
         AlertDialog(
-            modifier = Modifier.onVisibleChange {
+            modifier = Modifier.onVisibilityChanged {
                 println("visible alert dialog $it")
             },
             onDismissRequest = {
@@ -356,7 +361,7 @@ private fun VisibilityWindowCompose() {
                 openDialog.value = false
             },
             title = {
-                Text(text = "Title", modifier = Modifier.onVisibleChange {
+                Text(text = "Title", modifier = Modifier.onVisibilityChanged {
                     println("title alert dialog visible $it")
                 })
             },

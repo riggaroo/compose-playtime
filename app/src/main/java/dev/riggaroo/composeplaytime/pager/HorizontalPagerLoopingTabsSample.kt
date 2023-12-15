@@ -88,10 +88,10 @@ fun HorizontalPagerLoopingTabsSample() {
                 // Our selected tab is our current page
                 selectedTabIndex = currentIndex,
                 indicator = { tabPositions ->
-                    TabRowDefaults.SecondaryIndicator(
+                    /*TabRowDefaults.SecondaryIndicator(
                         Modifier.pagerTabIndicatorOffset(pagerState, tabPositions,
                             ::pageMapper)
-                    )
+                    )*/
                 }
             ) {
                 // Add tabs for all of our pages

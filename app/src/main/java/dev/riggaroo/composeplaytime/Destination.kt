@@ -47,5 +47,7 @@ enum class Destination(val route: String) {
     PagerFanTransition("pager_fan_transition"),
     PagerFidgetTransition("pager_fan_fidget_transition"),
     PagerHingeTransition("pager_hinge_transition"),
-    PagerGateTransition("pager_gate_transition")
+    PagerGateTransition("pager_gate_transition"),
+
+    VisibilityTrackingKeyboard("visibility_keyboard")
 }

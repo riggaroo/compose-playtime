@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,14 +34,15 @@ import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.circle
 import androidx.graphics.shapes.star
-import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun ShapeAsLoader() {
-    // [START android_compose_graphics_basic_polygon]
+    val pathMeasurer = remember {
+        PathMeasure()
+    }
     val infiniteTransition = rememberInfiniteTransition(label = "infinite")
     val progress = infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -60,86 +62,99 @@ fun ShapeAsLoader() {
         ),
         label = "rotation"
     )
-    val pathMeasurer = remember {
-        PathMeasure()
+    val starPolygon = remember {
+        RoundedPolygon.star(
+            numVerticesPerRadius = 12,
+            innerRadius = 2f / 3f,
+            rounding = CornerRounding(1f / 6f)
+        )
     }
+    val circlePolygon = remember {
+        RoundedPolygon.circle(
+            numVertices = 12
+        )
+    }
+    val morph = remember {
+        Morph(starPolygon, circlePolygon)
+    }
+    var morphPath = remember {
+        Path()
+    }
+
     Box(
         modifier = Modifier
             .padding(16.dp)
             .drawWithCache {
-                val starPolygon = RoundedPolygon.star(
-                    numVerticesPerRadius = 12,
-                    innerRadius = size.minDimension / 3f,
-                    rounding = CornerRounding(size.minDimension / 6f),
-                    radius = size.minDimension / 2,
-                    centerX = size.width / 2,
-                    centerY = size.height / 2,
-
+                morphPath = morph
+                    .toComposePath(
+                        progress = progress.value,
+                        scale = size.minDimension / 2f,
+                        path = morphPath
                     )
-                val roundedPolygon = RoundedPolygon.circle(
-                    numVertices = 12,
-                    radius = size.minDimension / 2,
-                    centerX = size.width / 2,
-                    centerY = size.height / 2
-                )
-                val morph = Morph(starPolygon, roundedPolygon)
-
-                val moprhPath = morph.toComposePath(progress = progress.value)
-                val morphAndroidPath = moprhPath
-                    .asAndroidPath()
+                val morphAndroidPath = morphPath.asAndroidPath()
                 val flattenedStarPath = morphAndroidPath.flatten()
 
-                pathMeasurer.setPath(moprhPath, false)
+                pathMeasurer.setPath(morphPath, false)
                 val totalLength = pathMeasurer.length
 
                 onDrawBehind {
                     rotate(rotation.value) {
-                        val currentLength = totalLength * progress.value
-                        flattenedStarPath.forEach { line ->
-                            val startColor = interpolateColors(line.startFraction, colors)
-                            if (line.startFraction * totalLength < currentLength) {
-                                if (progress.value > line.endFraction) {
-                                    val endColor = interpolateColors(line.endFraction, colors)
-                                    drawLine(
-                                        brush = Brush.linearGradient(listOf(startColor, endColor)),
-                                        start = Offset(line.start.x, line.start.y),
-                                        end = Offset(line.end.x, line.end.y),
-                                        strokeWidth = 16.dp.toPx(),
-                                        cap = StrokeCap.Round
-                                    )
-                                } else {
-                                    val endColor = interpolateColors(progress.value, colors)
-                                    val endX = mapValue(
-                                        progress.value,
-                                        line.startFraction,
-                                        line.endFraction,
-                                        line.start.x,
-                                        line.end.x
-                                    )
-                                    val endY = mapValue(
-                                        progress.value,
-                                        line.startFraction,
-                                        line.endFraction,
-                                        line.start.y,
-                                        line.end.y
-                                    )
-                                    drawLine(
-                                        brush = Brush.linearGradient(listOf(startColor, endColor)),
-                                        start = Offset(line.start.x, line.start.y),
-                                        end = Offset(endX.absoluteValue, endY.absoluteValue),
-                                        strokeWidth = 16.dp.toPx(),
-                                        cap = StrokeCap.Round
-                                    )
+                        translate(size.width / 2f, size.height / 2f) {
+                            val currentLength = totalLength * progress.value
+                            flattenedStarPath.forEach { line ->
+                                val startColor = interpolateColors(line.startFraction, colors)
+                                if (line.startFraction * totalLength < currentLength) {
+                                    if (progress.value > line.endFraction) {
+                                        val endColor = interpolateColors(line.endFraction, colors)
+                                        drawLine(
+                                            brush = Brush.linearGradient(
+                                                listOf(
+                                                    startColor,
+                                                    endColor
+                                                )
+                                            ),
+                                            start = Offset(line.start.x, line.start.y),
+                                            end = Offset(line.end.x, line.end.y),
+                                            strokeWidth = 16.dp.toPx(),
+                                            cap = StrokeCap.Round
+                                        )
+                                    } else {
+                                        val endColor = interpolateColors(progress.value, colors)
+                                        val endX = mapValue(
+                                            progress.value,
+                                            line.startFraction,
+                                            line.endFraction,
+                                            line.start.x,
+                                            line.end.x
+                                        )
+                                        val endY = mapValue(
+                                            progress.value,
+                                            line.startFraction,
+                                            line.endFraction,
+                                            line.start.y,
+                                            line.end.y
+                                        )
+                                        drawLine(
+                                            brush = Brush.linearGradient(
+                                                listOf(
+                                                    startColor,
+                                                    endColor
+                                                )
+                                            ),
+                                            start = Offset(line.start.x, line.start.y),
+                                            end = Offset(endX, endY),
+                                            strokeWidth = 16.dp.toPx(),
+                                            cap = StrokeCap.Round
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-
                 }
             }
             .fillMaxSize()
     )
-    // [END android_compose_graphics_basic_polygon]
 }
 
 private fun interpolateColors(

@@ -98,28 +98,23 @@ fun ShapeAsLoader() {
                 val totalLength = pathMeasurer.length
 
                 onDrawBehind {
+
                     rotate(rotation.value) {
                         translate(size.width / 2f, size.height / 2f) {
+                            val brush = Brush.sweepGradient(colors, center = Offset(0.5f, 0.5f))
+
                             val currentLength = totalLength * progress.value
                             flattenedStarPath.forEach { line ->
-                                val startColor = interpolateColors(line.startFraction, colors)
                                 if (line.startFraction * totalLength < currentLength) {
                                     if (progress.value > line.endFraction) {
-                                        val endColor = interpolateColors(line.endFraction, colors)
                                         drawLine(
-                                            brush = Brush.linearGradient(
-                                                listOf(
-                                                    startColor,
-                                                    endColor
-                                                )
-                                            ),
+                                            brush = brush,
                                             start = Offset(line.start.x, line.start.y),
                                             end = Offset(line.end.x, line.end.y),
                                             strokeWidth = 16.dp.toPx(),
                                             cap = StrokeCap.Round
                                         )
                                     } else {
-                                        val endColor = interpolateColors(progress.value, colors)
                                         val endX = mapValue(
                                             progress.value,
                                             line.startFraction,
@@ -135,12 +130,7 @@ fun ShapeAsLoader() {
                                             line.end.y
                                         )
                                         drawLine(
-                                            brush = Brush.linearGradient(
-                                                listOf(
-                                                    startColor,
-                                                    endColor
-                                                )
-                                            ),
+                                            brush =brush,
                                             start = Offset(line.start.x, line.start.y),
                                             end = Offset(endX, endY),
                                             strokeWidth = 16.dp.toPx(),
@@ -155,18 +145,6 @@ fun ShapeAsLoader() {
             }
             .fillMaxSize()
     )
-}
-
-private fun interpolateColors(
-    progress: Float,
-    colorsInput: List<Color>,
-): Color {
-    if (progress == 1f) return colorsInput.last()
-    val scaledProgress = progress * (colorsInput.size - 1)
-    val oldColor = colorsInput[scaledProgress.toInt()]
-    val newColor = colorsInput[(scaledProgress + 1f).toInt()]
-    val newScaledAnimationValue = scaledProgress - floor(scaledProgress)
-    return lerp(start = oldColor, stop = newColor, fraction = newScaledAnimationValue)
 }
 
 private val colors = listOf(

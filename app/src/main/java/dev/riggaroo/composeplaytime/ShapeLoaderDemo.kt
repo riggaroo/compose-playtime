@@ -21,20 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.asAndroidPath
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.flatten
 import androidx.graphics.shapes.CornerRounding
-import androidx.graphics.shapes.Cubic
 import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.circle
 import androidx.graphics.shapes.star
-import kotlin.math.floor
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
@@ -80,6 +76,9 @@ fun ShapeAsLoader() {
     var morphPath = remember {
         Path()
     }
+    val destinationPath = remember{
+        Path()
+    }
 
     Box(
         modifier = Modifier
@@ -91,11 +90,10 @@ fun ShapeAsLoader() {
                         scale = size.minDimension / 2f,
                         path = morphPath
                     )
-                val morphAndroidPath = morphPath.asAndroidPath()
-                val flattenedStarPath = morphAndroidPath.flatten()
-
                 pathMeasurer.setPath(morphPath, false)
                 val totalLength = pathMeasurer.length
+                destinationPath.reset()
+                pathMeasurer.getSegment(0f, totalLength * progress.value, destinationPath)
 
                 onDrawBehind {
 
@@ -103,42 +101,7 @@ fun ShapeAsLoader() {
                         translate(size.width / 2f, size.height / 2f) {
                             val brush = Brush.sweepGradient(colors, center = Offset(0.5f, 0.5f))
 
-                            val currentLength = totalLength * progress.value
-                            flattenedStarPath.forEach { line ->
-                                if (line.startFraction * totalLength < currentLength) {
-                                    if (progress.value > line.endFraction) {
-                                        drawLine(
-                                            brush = brush,
-                                            start = Offset(line.start.x, line.start.y),
-                                            end = Offset(line.end.x, line.end.y),
-                                            strokeWidth = 16.dp.toPx(),
-                                            cap = StrokeCap.Round
-                                        )
-                                    } else {
-                                        val endX = mapValue(
-                                            progress.value,
-                                            line.startFraction,
-                                            line.endFraction,
-                                            line.start.x,
-                                            line.end.x
-                                        )
-                                        val endY = mapValue(
-                                            progress.value,
-                                            line.startFraction,
-                                            line.endFraction,
-                                            line.start.y,
-                                            line.end.y
-                                        )
-                                        drawLine(
-                                            brush =brush,
-                                            start = Offset(line.start.x, line.start.y),
-                                            end = Offset(endX, endY),
-                                            strokeWidth = 16.dp.toPx(),
-                                            cap = StrokeCap.Round
-                                        )
-                                    }
-                                }
-                            }
+                            drawPath(destinationPath, brush, style = Stroke(16.dp.toPx(), cap = StrokeCap.Round))
                         }
                     }
                 }
@@ -157,34 +120,6 @@ private val colors = listOf(
     Color(0xFFDE589F),
     Color(0xFF3FCEBC),
 )
-
-private fun mapValue(
-    value: Float,
-    fromRangeStart: Float,
-    fromRangeEnd: Float,
-    toRangeStart: Float,
-    toRangeEnd: Float
-): Float {
-    val ratio =
-        (value - fromRangeStart) / (fromRangeEnd - fromRangeStart)
-    return toRangeStart + ratio * (toRangeEnd - toRangeStart)
-}
-
-fun List<Cubic>.toPath(path: Path = Path(), scale: Float = 1f): Path {
-    path.rewind()
-    firstOrNull()?.let { first ->
-        path.moveTo(first.anchor0X * scale, first.anchor0Y * scale)
-    }
-    for (bezier in this) {
-        path.cubicTo(
-            bezier.control0X * scale, bezier.control0Y * scale,
-            bezier.control1X * scale, bezier.control1Y * scale,
-            bezier.anchor1X * scale, bezier.anchor1Y * scale
-        )
-    }
-    path.close()
-    return path
-}
 
 fun Morph.toComposePath(progress: Float, scale: Float = 1f, path: Path = Path()): Path {
     var first = true

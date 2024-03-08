@@ -18,11 +18,14 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +34,8 @@ import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.circle
 import androidx.graphics.shapes.star
+import androidx.graphics.shapes.toPath
+import kotlin.math.max
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
@@ -76,32 +81,40 @@ fun ShapeAsLoader() {
     var morphPath = remember {
         Path()
     }
-    val destinationPath = remember{
+    val destinationPath = remember {
         Path()
+    }
+    var androidPath = remember {
+        android.graphics.Path()
     }
 
     Box(
         modifier = Modifier
             .padding(16.dp)
             .drawWithCache {
-                morphPath = morph
-                    .toComposePath(
-                        progress = progress.value,
-                        scale = size.minDimension / 2f,
-                        path = morphPath
-                    )
+                // We first convert to an android.graphics.Path, then to compose Path.
+                androidPath = morph.toPath(progress.value, androidPath)
+                morphPath = androidPath.asComposePath()
+                val matrix = Matrix()
+                matrix.reset()
+                matrix.scale(size.minDimension / 2f, size.minDimension / 2f)
+                morphPath.transform(matrix)
+
                 pathMeasurer.setPath(morphPath, false)
                 val totalLength = pathMeasurer.length
                 destinationPath.reset()
                 pathMeasurer.getSegment(0f, totalLength * progress.value, destinationPath)
 
                 onDrawBehind {
-
                     rotate(rotation.value) {
                         translate(size.width / 2f, size.height / 2f) {
-                            val brush = Brush.sweepGradient(colors, center = Offset(0.5f, 0.5f))
-
-                            drawPath(destinationPath, brush, style = Stroke(16.dp.toPx(), cap = StrokeCap.Round))
+                            val brush =
+                                Brush.sweepGradient(colors, center = Offset(0.5f, 0.5f))
+                            drawPath(
+                                morphPath,
+                                brush,
+                                style = Stroke(16.dp.toPx(), cap = StrokeCap.Round)
+                            )
                         }
                     }
                 }

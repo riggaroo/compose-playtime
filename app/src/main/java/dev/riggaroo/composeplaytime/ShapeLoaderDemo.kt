@@ -87,6 +87,9 @@ fun ShapeAsLoader() {
     var androidPath = remember {
         android.graphics.Path()
     }
+    val matrix = remember {
+        Matrix()
+    }
 
     Box(
         modifier = Modifier
@@ -95,7 +98,6 @@ fun ShapeAsLoader() {
                 // We first convert to an android.graphics.Path, then to compose Path.
                 androidPath = morph.toPath(progress.value, androidPath)
                 morphPath = androidPath.asComposePath()
-                val matrix = Matrix()
                 matrix.reset()
                 matrix.scale(size.minDimension / 2f, size.minDimension / 2f)
                 morphPath.transform(matrix)

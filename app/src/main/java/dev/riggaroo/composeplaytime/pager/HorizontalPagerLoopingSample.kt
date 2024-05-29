@@ -36,8 +36,7 @@ import androidx.compose.ui.unit.dp
 import dev.riggaroo.composeplaytime.R
 
 @OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class
+    ExperimentalMaterial3Api::class
 )
 @Composable
 fun HorizontalPagerLoopingSample() {

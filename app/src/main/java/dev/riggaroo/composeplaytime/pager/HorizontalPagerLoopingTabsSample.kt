@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.lerp
 import dev.riggaroo.composeplaytime.R
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalPagerLoopingTabsSample() {
     Scaffold(

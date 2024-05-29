@@ -97,7 +97,6 @@ fun HorizontalPagerBasicSample() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ActionsRow(
     pagerState: PagerState,

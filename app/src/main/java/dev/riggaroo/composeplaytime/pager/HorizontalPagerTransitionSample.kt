@@ -16,9 +16,6 @@
 @file:Suppress("DEPRECATION")
 package dev.riggaroo.composeplaytime.pager
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -37,7 +34,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -51,7 +47,6 @@ import androidx.compose.ui.util.lerp
 import coil.compose.rememberImagePainter
 import dev.riggaroo.composeplaytime.R
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
-import dev.riggaroo.composeplaytime.ui.theme.ComposePlaytimeTheme
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterial3Api::class)

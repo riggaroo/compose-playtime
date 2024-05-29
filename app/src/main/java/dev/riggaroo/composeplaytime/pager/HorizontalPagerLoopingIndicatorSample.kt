@@ -50,7 +50,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalMaterial3Api::class,
+@OptIn(
     ExperimentalFoundationApi::class, ExperimentalPagerApi::class
 )
 @Composable

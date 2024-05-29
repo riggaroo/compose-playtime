@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
-import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -36,14 +35,13 @@ import kotlin.math.absoluteValue
 */
 
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = { 10 })
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        beyondBoundsPageCount = 2
+        outOfBoundsPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -67,7 +65,7 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
 fun Modifier.pagerCubeOutRotationTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    val pageOffset = pagerState.getOffsetFractionForPage(page)
     if (pageOffset < -1f) {
         // page is far off screen
         alpha = 0f
@@ -92,7 +90,7 @@ fun Modifier.pagerFadeOutTransition(page: Int, pagerState: PagerState) = graphic
     // Calculate the absolute offset for the current page from the
     // scroll position. We use the absolute value which allows us to mirror
     // any effects for both directions
-    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    val pageOffset = pagerState.getOffsetFractionForPage(page)
 
     alpha = lerp(
         start = 0.5f,

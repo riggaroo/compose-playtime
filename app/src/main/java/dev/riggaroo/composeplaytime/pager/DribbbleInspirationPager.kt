@@ -1,5 +1,6 @@
 package dev.riggaroo.composeplaytime.pager
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -59,10 +60,10 @@ fun DribbbleInspirationPager() {
             .fillMaxSize()
             .background(Color(0xFFECECEC))
     ) {
-        val pagerState = rememberPagerState(pageCount = {10 })
+        val pagerState = rememberPagerState(pageCount = { 10 })
         HorizontalPager(
             pageSpacing = 16.dp,
-            beyondBoundsPageCount = 2,
+            outOfBoundsPageCount = 2,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
@@ -80,7 +81,6 @@ fun DribbbleInspirationPager() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongInformationCard(
     pagerState: PagerState,
@@ -96,8 +96,8 @@ fun SongInformationCard(
         colors = elevatedCardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier) {
-            val pageOffset = ((pagerState.currentPage - page) + pagerState
-                .currentPageOffsetFraction).absoluteValue
+            val pageOffset = pagerState.getOffsetFractionForPage(page).absoluteValue
+            Log.d("dribble", "Page: $page pageOffset $pageOffset")
             Image(
                 modifier = Modifier
                     .padding(32.dp)

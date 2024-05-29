@@ -18,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -39,14 +38,13 @@ import kotlin.math.absoluteValue
 */
 
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithCubeInScalingTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = { 10 })
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        beyondBoundsPageCount = 2
+        outOfBoundsPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -74,7 +72,7 @@ fun Modifier.pagerCubeInScalingTransition(page: Int, pagerState: PagerState) = g
     cameraDistance = 32f
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    val pageOffset = pagerState.getOffsetFractionForPage(page)
 
     if (pageOffset < -1f) {
         // page is far off screen

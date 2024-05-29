@@ -15,7 +15,6 @@
  */
 package dev.riggaroo.composeplaytime.pager
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.riggaroo.composeplaytime.R
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NestedPagersSample() {
     Scaffold(

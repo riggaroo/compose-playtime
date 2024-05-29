@@ -34,19 +34,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithFanTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = { 10 })
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        beyondBoundsPageCount = 2
+        outOfBoundsPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -74,7 +72,7 @@ fun Modifier.pagerFanTransition(page: Int, pagerState: PagerState) = graphicsLay
     cameraDistance = 2000f
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    val pageOffset = pagerState.getOffsetFractionForPage(page)
     translationX = pageOffset * size.width
     transformOrigin = TransformOrigin(0f, 0.5f)
 

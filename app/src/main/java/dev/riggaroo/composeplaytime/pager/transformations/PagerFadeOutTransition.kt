@@ -43,7 +43,7 @@ fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        outOfBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -69,7 +69,7 @@ fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalFoundationApi::class)
 fun Modifier.pagerFadeTransition(page: Int, pagerState: PagerState) =
     graphicsLayer {
-        val pageOffset = pagerState.getOffsetFractionForPage(page)
+        val pageOffset = pagerState.getOffsetDistanceInPages(page)
         translationX = pageOffset * size.width
         alpha = 1 - pageOffset.absoluteValue
     }

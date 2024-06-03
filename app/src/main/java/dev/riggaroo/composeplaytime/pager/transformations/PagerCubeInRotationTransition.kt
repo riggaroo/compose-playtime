@@ -45,7 +45,7 @@ fun HorizontalPagerWithCubeInTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        outOfBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -71,7 +71,7 @@ fun HorizontalPagerWithCubeInTransition(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalFoundationApi::class)
 fun Modifier.pagerCubeInRotationTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     cameraDistance = 32f
-    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
 
     if (pageOffset < -1f) {
         // page is far off screen

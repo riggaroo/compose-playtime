@@ -39,7 +39,7 @@ fun HorizontalPagerWithCubeOutScalingTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        outOfBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -63,7 +63,7 @@ fun HorizontalPagerWithCubeOutScalingTransition(modifier: Modifier = Modifier) {
 fun Modifier.pagerCubeOutScalingTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
     if (pageOffset < -1f) {
         // page is far off screen
         alpha = 0f

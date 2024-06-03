@@ -63,7 +63,7 @@ fun DribbbleInspirationPager() {
         val pagerState = rememberPagerState(pageCount = { 10 })
         HorizontalPager(
             pageSpacing = 16.dp,
-            outOfBoundsPageCount = 2,
+            beyondViewportPageCount = 2,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
@@ -96,7 +96,7 @@ fun SongInformationCard(
         colors = elevatedCardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier) {
-            val pageOffset = pagerState.getOffsetFractionForPage(page).absoluteValue
+            val pageOffset = pagerState.getOffsetDistanceInPages(page).absoluteValue
             Log.d("dribble", "Page: $page pageOffset $pageOffset")
             Image(
                 modifier = Modifier

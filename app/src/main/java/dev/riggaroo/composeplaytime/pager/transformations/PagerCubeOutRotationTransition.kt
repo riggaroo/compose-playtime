@@ -41,7 +41,7 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        outOfBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -65,7 +65,7 @@ fun HorizontalPagerWithCubeOutTransition(modifier: Modifier = Modifier) {
 fun Modifier.pagerCubeOutRotationTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
     if (pageOffset < -1f) {
         // page is far off screen
         alpha = 0f
@@ -90,7 +90,7 @@ fun Modifier.pagerFadeOutTransition(page: Int, pagerState: PagerState) = graphic
     // Calculate the absolute offset for the current page from the
     // scroll position. We use the absolute value which allows us to mirror
     // any effects for both directions
-    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
 
     alpha = lerp(
         start = 0.5f,

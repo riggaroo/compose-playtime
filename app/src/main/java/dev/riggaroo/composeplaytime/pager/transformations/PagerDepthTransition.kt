@@ -47,7 +47,7 @@ fun HorizontalPagerWithDepthTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        outOfBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -72,7 +72,7 @@ fun HorizontalPagerWithDepthTransition(modifier: Modifier = Modifier) {
 
 fun Modifier.pagerDepthTransition(page: Int, pagerState: PagerState) = graphicsLayer {
 
-    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
 
     if (pageOffset < -1f) {
         // page is far off screen

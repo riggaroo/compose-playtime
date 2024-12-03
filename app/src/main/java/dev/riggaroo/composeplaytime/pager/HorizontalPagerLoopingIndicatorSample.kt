@@ -43,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -51,8 +52,9 @@ import kotlinx.coroutines.delay
 
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalPagerApi::class
+    ExperimentalPagerApi::class
 )
+@Preview
 @Composable
 fun HorizontalPagerLoopingIndicatorSample() {
     Scaffold(

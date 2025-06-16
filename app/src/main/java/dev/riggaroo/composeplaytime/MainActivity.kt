@@ -24,11 +24,9 @@ import dev.riggaroo.composeplaytime.pager.HorizontalPagerDifferentPaddingsSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerLoopingIndicatorSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerLoopingTabsSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerScrollingContentSample
-import dev.riggaroo.composeplaytime.pager.HorizontalPagerWithIndicatorSample
 import dev.riggaroo.composeplaytime.pager.HorizontalPagerWithOffsetTransitionSample
 import dev.riggaroo.composeplaytime.pager.NestedPagersSample
 import dev.riggaroo.composeplaytime.pager.VerticalPagerBasicSample
-import dev.riggaroo.composeplaytime.pager.VerticalPagerWithIndicatorSample
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInDepthTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInScalingTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithCubeInTransition
@@ -42,6 +40,8 @@ import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithFid
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithGateTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithHingeTransition
 import dev.riggaroo.composeplaytime.pager.transformations.HorizontalPagerWithSpinningTransition
+import dev.riggaroo.composeplaytime.shadows.NeumorphicRecessedButton
+import dev.riggaroo.composeplaytime.shadows.PressableNeumorphicButton
 import dev.riggaroo.composeplaytime.ui.theme.ComposePlaytimeTheme
 
 class MainActivity : ComponentActivity() {
@@ -92,12 +92,8 @@ class MainActivity : ComponentActivity() {
                                     HorizontalPagerScrollingContentSample()
                                 Destination.HorizontalPagerTabs -> HorizontalPagerTabsSample()
                                 Destination.HorizontalPagerTransition -> HorizontalPagerWithOffsetTransitionSample()
-                                Destination.HorizontalPagerWithIndicator ->
-                                    HorizontalPagerWithIndicatorSample()
                                 Destination.NestedPagesSample -> NestedPagersSample()
                                 Destination.VerticalPagerBasic -> VerticalPagerBasicSample()
-                                Destination.VerticalPagerWithIndicator ->
-                                    VerticalPagerWithIndicatorSample()
                                 Destination.PagerWithCubeTransition ->
                                     HorizontalPagerWithCubeOutTransition()
                                 Destination.PagerWithCubeOutScalingTransition ->
@@ -126,6 +122,8 @@ class MainActivity : ComponentActivity() {
                                     HorizontalPagerWithHingeTransition()
                                 Destination.PagerGateTransition ->
                                     HorizontalPagerWithGateTransition()
+                                Destination.Shadows ->
+                                    PressableNeumorphicButton ()
                             }
                         }
                     }

@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +33,6 @@ import dev.riggaroo.composeplaytime.pager.transformations.pagerFadeTransition
  * https://dribbble.com/shots/4718271-Areia-Dots-Interaction-Free-prd-6
  */
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LineIndicatorExample() {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -49,7 +47,6 @@ fun LineIndicatorExample() {
                 PagerSampleItem(
                     page = page
                 )
-                CircularProgressIndicator()
                 AnimatedVisibility(
                     pagerState.settledPage == page,
                     enter = fadeIn(),

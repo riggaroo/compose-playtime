@@ -39,8 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.riggaroo.composeplaytime.R
 
-@OptIn(ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class
+@OptIn(ExperimentalMaterial3Api::class
 )
 @Composable
 fun HorizontalPagerScrollingContentSample() {

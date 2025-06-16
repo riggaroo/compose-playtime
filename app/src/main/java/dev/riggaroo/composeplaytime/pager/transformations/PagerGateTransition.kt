@@ -19,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
@@ -39,7 +38,6 @@ import kotlin.math.absoluteValue
 * limitations under the License.
 */
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithGateTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = { 10 })
@@ -73,7 +71,7 @@ fun HorizontalPagerWithGateTransition(modifier: Modifier = Modifier) {
 fun Modifier.pagerGateTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     // Calculate the absolute offset for the current page from the
     // scroll position.
-    val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
+    val pageOffset = pagerState.getOffsetDistanceInPages(page)
     translationX = pageOffset * size.width
 
     if (pageOffset < -1f) {

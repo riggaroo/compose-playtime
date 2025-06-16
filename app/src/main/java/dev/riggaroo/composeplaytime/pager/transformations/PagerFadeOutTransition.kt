@@ -16,6 +16,7 @@ package dev.riggaroo.composeplaytime.pager.transformations
 * limitations under the License.
 */
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -33,12 +34,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import dev.riggaroo.composeplaytime.pager.calculateCurrentOffsetForPage
 import dev.riggaroo.composeplaytime.rememberRandomSampleImageUrl
 import kotlin.math.absoluteValue
 
 @Preview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState(pageCount = { 10 })
@@ -68,10 +67,10 @@ fun HorizontalPagerWithFadeTransition(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+
 fun Modifier.pagerFadeTransition(page: Int, pagerState: PagerState) =
     graphicsLayer {
-        val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
-        translationX = pageOffset * size.width
+        val pageOffset = pagerState.getOffsetDistanceInPages(page)
+        translationX = -pageOffset * size.width
         alpha = 1 - pageOffset.absoluteValue
     }

@@ -62,7 +62,7 @@ fun DribbbleInspirationPager() {
         val pagerState = rememberPagerState(pageCount = {10 })
         HorizontalPager(
             pageSpacing = 16.dp,
-            beyondBoundsPageCount = 2,
+            beyondViewportPageCount = 2,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->

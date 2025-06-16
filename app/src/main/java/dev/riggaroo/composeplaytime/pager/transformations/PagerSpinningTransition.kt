@@ -45,7 +45,7 @@ fun HorizontalPagerWithSpinningTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        beyondBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier
@@ -70,7 +70,7 @@ fun HorizontalPagerWithSpinningTransition(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalFoundationApi::class)
 fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState): Modifier {
-    return this.then(graphicsLayer {
+    return graphicsLayer {
         // Calculate the absolute offset for the current page from the
         // scroll position.
         val pageOffset = ((pagerState.currentPage - page) + pagerState
@@ -101,7 +101,7 @@ fun Modifier.pagerSpinningClockwiseTransition(page: Int, pagerState: PagerState)
             alpha = 0f
         }
 
-    })
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

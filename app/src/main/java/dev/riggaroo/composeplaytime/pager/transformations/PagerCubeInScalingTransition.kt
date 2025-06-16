@@ -46,7 +46,7 @@ fun HorizontalPagerWithCubeInScalingTransition(modifier: Modifier = Modifier) {
     HorizontalPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState,
-        beyondBoundsPageCount = 2
+        beyondViewportPageCount = 2
     ) { page ->
         Box(
             Modifier

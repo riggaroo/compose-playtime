@@ -42,7 +42,7 @@ fun LineIndicatorExample() {
         val pagerState = rememberPagerState(pageCount = {pageCount})
         val destinations = listOf("Maldives", "Cape Town", "London", "Greece", "New York")
         HorizontalPager(
-            beyondBoundsPageCount = 2,
+            beyondViewportPageCount = 2,
             state = pagerState
         ) { page ->
             Box(modifier = Modifier.pagerFadeTransition(page, pagerState = pagerState)) {

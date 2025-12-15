@@ -30,10 +30,8 @@ enum class Destination(val route: String) {
     HorizontalPagerScrollingContent("horizontal_pager_scrolling_content"),
     HorizontalPagerTabs("horizontal_pager_tabs_sample"),
     HorizontalPagerTransition("horizontal_pager_tabs_transition"),
-    HorizontalPagerWithIndicator("horizontal_pager_tabs_with_indicator"),
     NestedPagesSample("nested_pages_sample"),
     VerticalPagerBasic("vertical_pager_basic"),
-    VerticalPagerWithIndicator("vertical_pager_with_indicator"),
 
     PagerWithCubeTransition("pager_cube_out"),
     PagerWithCubeOutScalingTransition("pager_cube_out_scaling"),
@@ -47,5 +45,6 @@ enum class Destination(val route: String) {
     PagerFanTransition("pager_fan_transition"),
     PagerFidgetTransition("pager_fan_fidget_transition"),
     PagerHingeTransition("pager_hinge_transition"),
-    PagerGateTransition("pager_gate_transition")
+    PagerGateTransition("pager_gate_transition"),
+    Shadows("shadows")
 }

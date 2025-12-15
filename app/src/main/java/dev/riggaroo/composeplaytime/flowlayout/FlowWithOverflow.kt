@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Chip
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.ElevatedAssistChip
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -110,18 +109,18 @@ fun FlowWithOverflow() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChipItem(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Chip(
+    ElevatedAssistChip(
         modifier = modifier.padding(end = 4.dp),
         onClick = {},
         leadingIcon = {},
-        border = BorderStroke(1.dp, Color(0xFF3B3A3C))
-    ) {
-        Text(text)
-    }
+        border = BorderStroke(1.dp, Color(0xFF3B3A3C)),
+        label = {
+            Text(text)
+        }
+    )
 }

@@ -45,15 +45,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 
-@OptIn(
-    ExperimentalPagerApi::class
-)
 @Preview
 @Composable
 fun HorizontalPagerLoopingIndicatorSample() {
@@ -97,14 +92,6 @@ fun HorizontalPagerLoopingIndicatorSample() {
                         .aspectRatio(1f)
                 )
             }
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(16.dp),
-                pageCount = pageCount,
-                pageIndexMapping = ::pageMapper
-            )
 
             val loopState = remember {
                 mutableStateOf(true)
